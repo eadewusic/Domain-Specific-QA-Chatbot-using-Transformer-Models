@@ -25,11 +25,6 @@ Model Details:
 Hugging Face Repository: https://huggingface.co/Climi/Climate-Education-QA-Chatbot
 """
 
-# Climate Education QA Chatbot - Model Download
-# The trained model (~240MB) exceeds GitHub storage limits
-# Hence using Hugging Face Model Hub approach
-
-
 def download_model_from_huggingface():
     """
     Download the climate chatbot model from Hugging Face
