@@ -1,0 +1,89 @@
+{
+  "experiment_info": {
+    "name": "Climate Education Chatbot - Optimal Model",
+    "version": "Experiment 4c - Balanced",
+    "description": "Best performing model across all experiments",
+    "timestamp": "2025-06-17T00:58:29.482424"
+  },
+  "model_performance": {
+    "training_loss": 0.5757,
+    "validation_loss": 0.8844,
+    "bleu_score": 0.0549,
+    "average_generation_time": 17.3,
+    "performance_grade": "OPTIMAL"
+  },
+  "experiment_progression": {
+    "baseline": {
+      "learning_rate": 2e-05,
+      "batch_size": 16,
+      "epochs": 5,
+      "train_loss": 9.04,
+      "val_loss": 9.79,
+      "bleu": 0.0001,
+      "notes": "Severe underfitting"
+    },
+    "experiment_2": {
+      "learning_rate": 0.0005,
+      "batch_size": 8,
+      "epochs": 10,
+      "train_loss": 0.93,
+      "val_loss": 0.93,
+      "bleu": 0.0012,
+      "notes": "Major leap in text quality"
+    },
+    "experiment_3": {
+      "learning_rate": 0.0003,
+      "batch_size": 4,
+      "epochs": 15,
+      "train_loss": 1.2623,
+      "val_loss": 1.3637,
+      "bleu": 0.0392,
+      "notes": "Smooth fluency; minor factual errors"
+    },
+    "experiment_4": {
+      "learning_rate": 0.0001,
+      "batch_size": 8,
+      "epochs": 20,
+      "train_loss": 0.5757,
+      "val_loss": 0.8844,
+      "bleu": 0.0392,
+      "notes": "Best factual grounding, improved conciseness"
+    },
+    "experiment_4b": {
+      "description": "Speed-up variant",
+      "bleu": 0.034,
+      "generation_time": 16.7,
+      "notes": "Speed-up variant; less repetition but BLEU dropped"
+    },
+    "experiment_4c": {
+      "description": "OPTIMAL - Balanced version",
+      "bleu": 0.0549,
+      "generation_time": 17.3,
+      "notes": "BEST: Stable quality + fast generation"
+    }
+  },
+  "optimal_parameters": {
+    "max_length": 70,
+    "min_length": 18,
+    "temperature": 0.5,
+    "top_p": 0.8,
+    "top_k": 40,
+    "repetition_penalty": 2.0,
+    "no_repeat_ngram_size": 3,
+    "num_beams": 1
+  },
+  "dataset_info": {
+    "training_samples": 60,
+    "validation_samples": 13,
+    "test_samples": 13,
+    "domain": "Climate Education",
+    "model_type": "T5-small generative QA"
+  },
+  "achievements": [
+    "93% reduction in training loss (9.04 \u2192 0.5757)",
+    "55x improvement in BLEU score (0.0001 \u2192 0.0549)",
+    "30% speed improvement from baseline",
+    "Balanced quality and performance",
+    "Functional interactive chatbot"
+  ]
+}

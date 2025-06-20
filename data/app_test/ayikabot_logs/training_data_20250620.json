@@ -1,0 +1,26 @@
+[
+  {
+    "input": "question: climate",
+    "output": "Climate change is a process where human activities can be controlled by human activities, human activities, and human activities. The process involves three steps: reducing emissions, reducing emissions, and reducing emissions from landfills.",
+    "metadata": {
+      "confidence": 0.5714285714285714,
+      "timestamp": "2025-06-20T17:59:30.805623"
+    }
+  },
+  {
+    "input": "question: tell me about global warming",
+    "output": "Global warming refers to the long-term increase in Earth's average surface temperature due to human activities and natural factors. Since the late 1800s, the average global temperature has risen by about 1.1°C (2°F), with most of this warming occurring in the past 40 years.",
+    "metadata": {
+      "confidence": 0.5714285714285714,
+      "timestamp": "2025-06-20T18:04:35.666485"
+    }
+  },
+  {
+    "input": "question: Ohh, I see. Tell me about global warming then",
+    "output": "Global warming refers to the long-term increase in Earth's average surface temperature due to human activities and natural factors. The long-term increase in Earth's average surface temperature is due to human activities, but it's also due to human activities and natural factors.",
+    "metadata": {
+      "confidence": 0.5714285714285714,
+      "timestamp": "2025-06-20T18:17:33.545495"
+    }
+  }
+]

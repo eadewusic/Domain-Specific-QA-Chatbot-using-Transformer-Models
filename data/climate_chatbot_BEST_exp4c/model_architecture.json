@@ -1,0 +1,75 @@
+{
+  "model_architecture": {
+    "name": "T5-small",
+    "type": "Encoder-Decoder Transformer",
+    "purpose": "Text-to-Text Generation for Climate Education QA",
+    "framework": "TensorFlow",
+    "pretrained_source": "Hugging Face Transformers",
+    "parameters": 60506624,
+    "size_mb": 230.8
+  },
+  "transformer_config": {
+    "vocab_size": 32128,
+    "d_model": 512,
+    "num_heads": 8,
+    "num_layers": 6,
+    "d_ff": 2048,
+    "d_kv": 64,
+    "n_positions": 512,
+    "dropout_rate": 0.1
+  },
+  "architecture_details": {
+    "encoder": {
+      "layers": 6,
+      "attention_heads": 8,
+      "hidden_size": 512,
+      "feed_forward_size": 2048,
+      "key_value_size": 64
+    },
+    "decoder": {
+      "layers": 6,
+      "attention_heads": 8,
+      "hidden_size": 512,
+      "feed_forward_size": 2048
+    }
+  },
+  "task_adaptation": {
+    "input_format": "question: [QUESTION]",
+    "output_format": "Natural language answer",
+    "max_input_length": 128,
+    "max_output_length": 100,
+    "tokenizer": "SentencePiece",
+    "vocabulary_size": 32128
+  },
+  "training_configuration": {
+    "fine_tuning_type": "Full model fine-tuning",
+    "dataset_size": {
+      "training": 60,
+      "validation": 13,
+      "test": 13
+    },
+    "domain": "Climate Education",
+    "optimization": "AdamW with learning rate scheduling"
+  },
+  "computational_requirements": {
+    "memory_estimate": "~230.8 MB",
+    "inference_time": "~17 seconds per generation",
+    "training_time": "~27 minutes for 20 epochs",
+    "hardware_used": "Google Colab (GPU/CPU)"
+  },
+  "model_comparison": {
+    "chosen_model": "T5-small (60M parameters)",
+    "alternatives_considered": [
+      "T5-base (220M) - larger but slower",
+      "BERT - extractive QA only",
+      "GPT-2 - decoder-only architecture"
+    ],
+    "selection_rationale": [
+      "Generative QA capability",
+      "Manageable size for fine-tuning",
+      "Good performance on text-to-text tasks",
+      "Established architecture for educational applications"
+    ]
+  },
+  "documentation_created": "2025-06-17T01:56:25.610039"
+}
