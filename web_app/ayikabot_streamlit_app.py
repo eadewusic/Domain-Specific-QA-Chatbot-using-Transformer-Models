@@ -317,6 +317,7 @@ def export_training_data():
     except Exception as e:
         print(f"Training data export error: {str(e)}")
         return None
+
 def get_greeting_response() -> str:
     """Get a random greeting response"""
     return random.choice(GREETING_RESPONSES)
