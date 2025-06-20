@@ -1,0 +1,2 @@
+The tf_model.h5 model file is needed here too.
+Checkout data/model/download_tf_model_h5.py for instructions.
