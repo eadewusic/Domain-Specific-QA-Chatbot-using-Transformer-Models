@@ -300,16 +300,16 @@ def log_session_summary(db):
 def export_training_data(db):
     """
     Export logged data from Firestore in format suitable for model training.
+    Also logs metadata about the export to Firestore.
     """
     try:
         training_data = []
         
         # Fetch all climate-related interactions from Firestore
-        # For very large datasets, consider fetching in batches or filtering by date.
         interactions_ref = db.collection('interactions')
         query = interactions_ref.where('is_climate_related', '==', True).where('response_type', '==', 'climate_answer')
         
-        docs = query.stream() # Get all documents matching the query
+        docs = query.stream() 
         
         for doc in docs:
             entry = doc.to_dict()
@@ -323,10 +323,19 @@ def export_training_data(db):
             })
         
         if training_data:
-            # For demonstration, we'll offer a download button.
-            # In a real training pipeline, you'd integrate this with your ML workflow
-            # (e.g., download, then process, then train).
             training_json = json.dumps(training_data, ensure_ascii=False, indent=2)
+            
+            # --- NEW: Log export metadata to Firestore ---
+            export_log_entry = {
+                'timestamp': datetime.now(),
+                'exported_record_count': len(training_data),
+                'export_type': 'training_data',
+                'description': 'A batch of climate-related Q&A was exported for training purposes.'
+            }
+            db.collection('training_export_logs').add(export_log_entry)
+            print(f"Logged training data export event with {len(training_data)} records to Firestore.")
+            # --- END NEW ---
+
             st.download_button(
                 label="Download Training Data (JSON)",
                 data=training_json,
@@ -452,6 +461,8 @@ def main():
         st.stop()
 
     with st.sidebar:
+        # Re-added the 🌍 emoji with increased font-size for better visibility
+        st.markdown("<div style='text-align:center; margin-bottom:20px; font-size: 5rem;'>🌍</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
@@ -476,7 +487,7 @@ def main():
             with st.spinner("Fetching training data from Firestore..."):
                 count = export_training_data(db) # Pass db to export function
                 if count is not None: # Check for None explicitly for successful export (even if 0)
-                    st.success(f"Exported {count} training examples! Click the 'Download Training Data (JSON)' button above.")
+                    st.success(f"Exported {count} training examples! Click the 'Download Training Data (JSON)' button above. An export log has been recorded in Firestore.")
                 else:
                     st.info("No training data available in Firestore or export failed.")
         
@@ -484,7 +495,7 @@ def main():
         <small>
         <em>AyikaBot logs interactions to improve climate education responses. 
         Only climate-related Q&A pairs are used for training. 
-        <br><b>Logs are now stored persistently in Firestore.</b></em>
+        <br><b>Logs are now stored persistently in Firestore, including export events.</b></em>
         </small>
         """, unsafe_allow_html=True)
     
