@@ -452,9 +452,8 @@ def main():
         st.stop()
 
     with st.sidebar:
-        st.markdown("<div style='text-align:center; margin-bottom:20px;'>"
-                    "<img src='https://cdn-icons-png.flaticon.com/512/6057/6057198.png' width='80'>"
-                    "</div>", unsafe_allow_html=True)
+        # Changed from external image URL to a local emoji
+        st.markdown("<div style='text-align:center; margin-bottom:20px; font-size: 5rem;'>🌍</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
