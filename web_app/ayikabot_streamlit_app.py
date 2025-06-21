@@ -484,7 +484,8 @@ def main():
         st.markdown("""
         <small>
         <em>AyikaBot logs interactions to improve climate education responses. 
-        Only climate-related Q&A pairs are used for training. 
+        Only climate-related Q&A pairs are used for training.
+        <br><b>By clicking on the "Export Training Data" button, you agree to share only your climate-related chat with us for further improvement of the chatbot</b></em>
         </small>
         """, unsafe_allow_html=True)
     
