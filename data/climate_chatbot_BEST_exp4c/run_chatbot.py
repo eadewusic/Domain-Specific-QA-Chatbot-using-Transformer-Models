@@ -20,7 +20,7 @@ def load_optimal_chatbot():
         print("Model loaded successfully!")
         
         # Load optimal generation functions
-        exec(open('optimal_generation.py').read(), globals())
+        from optimal_generation import interactive_climate_chat_optimal
         
         print("Optimal generation functions loaded!")
         print("\nStarting interactive chat...")
