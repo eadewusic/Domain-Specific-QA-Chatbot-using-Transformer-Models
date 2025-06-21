@@ -24,7 +24,7 @@ except ImportError:
     st.error("Please install transformers: pip install transformers tensorflow")
     st.stop()
 
-# Define your Hugging Face Hub model ID
+# Define Hugging Face Hub model ID
 HUGGING_FACE_MODEL_ID = "Climi/Climate-Education-QA-Chatbot"
 
 # Firebase Initialization
@@ -58,7 +58,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS (existing CSS remains the same)
+# Custom CSS
 st.markdown("""
 <style>
 /* Header & layout */
@@ -181,7 +181,7 @@ div[data-testid="stButton"]:nth-of-type(2) > button {
 """, unsafe_allow_html=True)
 
 
-# Domain Detection Constants (remain unchanged)
+# Domain Detection Constants
 CLIMATE_KEYWORDS = {
     'core_climate': ['climate', 'global warming', 'greenhouse', 'carbon dioxide', 'co2', 'emissions', 'temperature'],
     'environmental': ['environment', 'pollution', 'sustainability', 'renewable energy', 'fossil fuels', 'deforestation'],
@@ -230,7 +230,7 @@ COMPLIMENT_RESPONSES = [
 ]
 
 @st.cache_resource
-def load_ayikabot_model(model_id): # Changed from model_path to model_id
+def load_ayikabot_model(model_id): 
     """Load the AyikaBot model and tokenizer from Hugging Face Hub"""
     try:
         tokenizer = T5Tokenizer.from_pretrained(model_id)
