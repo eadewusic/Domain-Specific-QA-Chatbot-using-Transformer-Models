@@ -9,11 +9,6 @@ from typing import Tuple, Dict, Any
 import sys
 import os
 
-# Firebase Imports
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-
 # Add the current directory to Python path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,32 +19,6 @@ except ImportError:
     st.error("Please install transformers: pip install transformers tensorflow")
     st.stop()
 
-# Define your Hugging Face Hub model ID
-HUGGING_FACE_MODEL_ID = "Climi/Climate-Education-QA-Chatbot"
-
-# Firebase Initialization
-# Use st.cache_resource to initialize Firebase only once
-@st.cache_resource
-def initialize_firestore():
-    try:
-        # Streamlit Secrets store the JSON as a string
-        # We need to parse it back to a dictionary
-        firebase_config_json = json.loads(st.secrets["FIREBASE_CONFIG"])
-        
-        # Initialize Firebase Admin SDK
-        cred = credentials.Certificate(firebase_config_json)
-        if not firebase_admin._apps: # Check if app is already initialized
-            firebase_admin.initialize_app(cred)
-        
-        db = firestore.client()
-        # Log success message to console instead
-        print("Firebase Firestore initialized successfully (backend log).")
-        return db
-    except Exception as e:
-        st.error(f"Error initializing Firebase Firestore: {e}. "
-                 "Please ensure 'FIREBASE_CONFIG' secret is correctly set in Streamlit Cloud.")
-        return None
-
 # Page configuration
 st.set_page_config(
     page_title="AyikaBot - Climate Education Bot",
@@ -58,14 +27,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS (existing CSS remains the same)
+# Custom CSS
 st.markdown("""
 <style>
 /* Header & layout */
 .main-header {
     text-align: left;
     padding: 1rem 0;
-    color: #fff; /* Assuming a dark background for readability */
+    color: #fff;
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
@@ -90,7 +59,7 @@ st.markdown("""
 }
 
 .subtitle {
-    color: #fff; /* Assuming a dark background for readability */
+    color: #fff;
     font-size: 1.1rem;
     margin-bottom: 2rem;
     text-align: left;
@@ -103,7 +72,6 @@ st.markdown("""
     padding: 1rem;
     border-radius: 15px;
     margin: 0.5rem;
-    word-wrap: break-word; /* Ensure long words wrap */
 }
 .user-message {
     background-color: #1976D220;
@@ -160,28 +128,10 @@ div[data-testid="stButton"]:nth-of-type(2) > button {
     height: 3em;
 }
 
-/* Ensure main content is centered and has max width */
-.st-emotion-cache-z5fcl4 { 
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-/* Sidebar styling for better contrast */
-.st-emotion-cache-1wp42u4 { 
-    background-color: #1a1a1a; 
-    color: #f0f0f0; 
-    padding: 20px;
-    border-right: 1px solid #333;
-}
-
-.st-emotion-cache-1ym3sml { 
-    background-color: #1a1a1a;
-}
 </style>
 """, unsafe_allow_html=True)
 
-
-# Domain Detection Constants (remain unchanged)
+# Domain Detection Constants
 CLIMATE_KEYWORDS = {
     'core_climate': ['climate', 'global warming', 'greenhouse', 'carbon dioxide', 'co2', 'emissions', 'temperature'],
     'environmental': ['environment', 'pollution', 'sustainability', 'renewable energy', 'fossil fuels', 'deforestation'],
@@ -202,6 +152,14 @@ GREETING_KEYWORDS = [
     'greetings', 'howdy', 'what\'s up', 'whats up', 'sup', 'yo', 'hiya'
 ]
 
+COMPLIMENT_KEYWORDS = [
+    'thank you', 'thanks', 'great', 'awesome', 'excellent', 'amazing', 'wonderful',
+    'fantastic', 'brilliant', 'helpful', 'nice', 'good job', 'well done', 
+    'impressive', 'perfect', 'love it', 'appreciate', 'grateful', 'cool',
+    'nice response', 'good response', 'that was helpful', 'very helpful',
+    'thx', 'ty', 'good answer', 'great answer', 'smart', 'clever'
+]
+
 GREETING_RESPONSES = [
     "Hello! I'm AyikaBot, your climate education companion. I'm here to help you learn about climate change, environmental impacts, and sustainability solutions. What would you like to explore today?",
     "Hi there! Great to meet you! I'm passionate about helping people understand climate science and environmental issues. What climate topic can I help you with?",
@@ -210,43 +168,62 @@ GREETING_RESPONSES = [
     "Hi! Nice to see you here. I'm your friendly climate education bot, ready to explore topics like global warming, sustainability, and environmental protection with you. What interests you most?"
 ]
 
+COMPLIMENT_RESPONSES = [
+    "Thank you so much! I'm glad I could help you learn about climate science. What other climate topic would you like to explore?",
+    "You're very welcome! I love sharing knowledge about our planet's climate. Is there another environmental question I can help you with?",
+    "I appreciate your kind words! Climate education is my passion. What else would you like to know about sustainability or environmental protection?",
+    "Thank you! It makes me happy to help people understand climate change better. What other climate topic interests you?",
+    "I'm so glad that was helpful! There's so much to learn about climate science. What would you like to explore next?",
+    "Thank you for the feedback! I'm here to make climate education accessible and engaging. What other questions do you have about our environment?"
+    "I'm thrilled to hear that! Climate education is so important, and I'm here to help. What other topics would you like to discuss?",
+    "Thanks! I'm passionate about making climate science understandable. Is there another aspect of climate change you're curious about?"
+]
+
 @st.cache_resource
-def load_ayikabot_model(model_id): # Changed from model_path to model_id
-    """Load the AyikaBot model and tokenizer from Hugging Face Hub"""
+def load_ayikabot_model(model_path):
+    """Load the AyikaBot model and tokenizer"""
     try:
-        tokenizer = T5Tokenizer.from_pretrained(model_id)
-        model = TFT5ForConditionalGeneration.from_pretrained(model_id)
+        tokenizer = T5Tokenizer.from_pretrained(model_path)
+        model = TFT5ForConditionalGeneration.from_pretrained(model_path)
         return tokenizer, model
     except Exception as e:
-        st.error(f"Error loading model from Hugging Face Hub ({model_id}): {str(e)}. Please check model ID and internet connection.")
+        st.error(f"Error loading model from {model_path}: {str(e)}")
         return None, None
 
 def is_greeting(question: str) -> bool:
     """Check if the input is a greeting"""
     question_lower = question.lower().strip()
+    # Remove punctuation for better matching
     cleaned = re.sub(r'[^\w\s]', '', question_lower)
     
+    # Check for exact matches or greetings at the start of the message
     for greeting in GREETING_KEYWORDS:
         if cleaned == greeting or cleaned.startswith(greeting + ' ') or cleaned.endswith(' ' + greeting):
             return True
     
+    # Check for very short inputs that are likely greetings
     if len(cleaned.split()) <= 2 and any(greeting in cleaned for greeting in ['hi', 'hello', 'hey']):
         return True
         
     return False
 
-# Firestore Logging Functions
-def log_user_interaction(db, question: str, response: str, metadata: Dict[str, Any], session_id: str = None):
+def log_user_interaction(question: str, response: str, metadata: Dict[str, Any], session_id: str = None):
     """
-    Log user interactions to Firestore.
+    Log user interactions for future model training and analysis
     """
     try:
+        # Create logs directory if it doesn't exist
+        logs_dir = "/content/ayikabot_logs"
+        os.makedirs(logs_dir, exist_ok=True)
+        
+        # Generate session ID if not provided
         if session_id is None:
             session_id = st.session_state.get('session_id', f"session_{int(time.time())}")
             st.session_state.session_id = session_id
         
+        # Create log entry
         log_entry = {
-            'timestamp': datetime.now(), # Store as datetime object for Firestore
+            'timestamp': datetime.now().isoformat(),
             'session_id': session_id,
             'user_question': question,
             'bot_response': response,
@@ -259,91 +236,106 @@ def log_user_interaction(db, question: str, response: str, metadata: Dict[str, A
             'response_length': len(response)
         }
         
-        # Add document to 'interactions' collection
-        db.collection('interactions').add(log_entry)
-        # print(f"Logged interaction for session {session_id}") # For debugging in logs
+        # Log to JSON file (for detailed analysis)
+        json_log_file = os.path.join(logs_dir, f"interactions_{datetime.now().strftime('%Y%m%d')}.json")
+        with open(json_log_file, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(log_entry, ensure_ascii=False) + '\n')
+        
+        # Log to CSV file (for easy spreadsheet analysis)
+        csv_log_file = os.path.join(logs_dir, f"interactions_{datetime.now().strftime('%Y%m%d')}.csv")
+        file_exists = os.path.isfile(csv_log_file)
+        
+        with open(csv_log_file, 'a', newline='', encoding='utf-8') as f:
+            fieldnames = ['timestamp', 'session_id', 'user_question', 'bot_response', 
+                         'response_type', 'is_climate_related', 'confidence_score', 
+                         'detection_reason', 'generation_time', 'question_length', 'response_length']
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            
+            # Write header if file is new
+            if not file_exists:
+                writer.writeheader()
+            
+            writer.writerow(log_entry)
             
     except Exception as e:
-        st.warning(f"Failed to log interaction to Firestore: {e}")
-        print(f"Firestore logging error (interaction): {e}")
+        # Don't break the app if logging fails
+        print(f"Logging error: {str(e)}")
 
-
-def log_session_summary(db):
+def log_session_summary():
     """
-    Log session summary to Firestore.
+    Log session summary when chat is cleared or session ends
     """
     try:
         if st.session_state.get('chat_history') and len(st.session_state.chat_history) > 0:
+            logs_dir = "/content/ayikabot_logs"
+            os.makedirs(logs_dir, exist_ok=True)
+            
             session_id = st.session_state.get('session_id', f"session_{int(time.time())}")
             stats = st.session_state.session_stats
             
             summary = {
-                'timestamp': datetime.now(), # Store as datetime object
+                'timestamp': datetime.now().isoformat(),
                 'session_id': session_id,
                 'total_questions': stats['questions_asked'],
                 'climate_questions': stats['climate_questions'],
                 'rejected_questions': stats['rejected_questions'],
                 'total_time': stats['total_time'],
-                'avg_response_time': stats['total_time'] / max(stats['climate_questions'], 1) if stats['climate_questions'] > 0 else 0,
-                'session_duration_interactions': len(st.session_state.chat_history),
-                'engagement_score': stats['climate_questions'] / max(stats['questions_asked'], 1) if stats['questions_asked'] > 0 else 0
+                'avg_response_time': stats['total_time'] / max(stats['climate_questions'], 1),
+                'session_duration': len(st.session_state.chat_history),
+                'engagement_score': stats['climate_questions'] / max(stats['questions_asked'], 1)
             }
             
-            # Add document to 'session_summaries' collection
-            db.collection('session_summaries').add(summary)
-            # print(f"Logged session summary for session {session_id}") # For debugging in logs
+            # Log session summary
+            summary_file = os.path.join(logs_dir, f"session_summaries_{datetime.now().strftime('%Y%m%d')}.json")
+            with open(summary_file, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(summary, ensure_ascii=False) + '\n')
                 
     except Exception as e:
-        st.warning(f"Failed to log session summary to Firestore: {e}")
-        print(f"Firestore logging error (summary): {e}")
+        print(f"Session summary logging error: {str(e)}")
 
-def export_training_data(db):
+def export_training_data():
     """
-    Export logged data from Firestore in format suitable for model training.
-    Also logs metadata about the export to Firestore.
+    Export logged data in format suitable for model training
     """
     try:
+        logs_dir = "/content/ayikabot_logs"
+        if not os.path.exists(logs_dir):
+            return None
+            
         training_data = []
         
-        # Fetch all climate-related interactions from Firestore
-        interactions_ref = db.collection('interactions')
-        query = interactions_ref.where('is_climate_related', '==', True).where('response_type', '==', 'climate_answer')
+        # Read all JSON log files
+        for filename in os.listdir(logs_dir):
+            if filename.startswith('interactions_') and filename.endswith('.json'):
+                filepath = os.path.join(logs_dir, filename)
+                with open(filepath, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        try:
+                            entry = json.loads(line.strip())
+                            # Only include climate-related Q&A for training
+                            if entry.get('is_climate_related') and entry.get('response_type') == 'climate_answer':
+                                training_data.append({
+                                    'input': f"question: {entry['user_question']}",
+                                    'output': entry['bot_response'],
+                                    'metadata': {
+                                        'confidence': entry['confidence_score'],
+                                        'timestamp': entry['timestamp']
+                                    }
+                                })
+                        except json.JSONDecodeError:
+                            continue
         
-        docs = query.stream() 
-        
-        for doc in docs:
-            entry = doc.to_dict()
-            training_data.append({
-                'input': f"question: {entry.get('user_question', '')}",
-                'output': entry.get('bot_response', ''),
-                'metadata': {
-                    'confidence': entry.get('confidence_score', 0.0),
-                    'timestamp': entry.get('timestamp', datetime.now()).isoformat()
-                }
-            })
-        
+        # Save training data
         if training_data:
-            training_json = json.dumps(training_data, ensure_ascii=False, indent=2)
+            training_file = os.path.join(logs_dir, f"training_data_{datetime.now().strftime('%Y%m%d')}.json")
+            with open(training_file, 'w', encoding='utf-8') as f:
+                json.dump(training_data, f, ensure_ascii=False, indent=2)
             
-            # Log export metadata to Firestore
-            export_log_entry = {
-                'timestamp': datetime.now(),
-                'exported_record_count': len(training_data),
-                'export_type': 'training_data',
-                'description': 'A batch of climate-related Q&A was exported for training purposes.'
-            }
-            db.collection('training_export_logs').add(export_log_entry)
-            print(f"Logged training data export event with {len(training_data)} records to Firestore.")
-
             return len(training_data)
         
-        return None # Return None if no training data is found
-            
     except Exception as e:
-        st.error(f"Error exporting training data from Firestore: {e}")
-        print(f"Firestore training data export error: {e}")
+        print(f"Training data export error: {str(e)}")
         return None
-
 def get_greeting_response() -> str:
     """Get a random greeting response"""
     return random.choice(GREETING_RESPONSES)
@@ -384,7 +376,7 @@ def generate_climate_response(question: str, tokenizer, model) -> str:
     """Generate response using the climate model"""
     try:
         prompt = f"question: {question.strip()}"
-        inputs = tokenizer(prompt, return_tensors="tf") 
+        inputs = tokenizer(prompt, return_tensors="tf")
         output_ids = model.generate(
             inputs.input_ids,
             attention_mask=inputs.attention_mask,
@@ -402,19 +394,20 @@ def generate_climate_response(question: str, tokenizer, model) -> str:
         )
         answer = tokenizer.decode(output_ids[0], skip_special_tokens=True)
         
+        # Clean up response prefixes
         for prefix in ["question:", "answer:", "response:"]:
             if answer.lower().startswith(prefix):
                 answer = answer[len(prefix):].strip()
         
         return answer if len(answer.split()) >= 8 else f"I can provide information about this climate topic: {answer}"
     except Exception as e:
-        print(f"Error generating response: {e}") 
         return "I encountered an issue generating a response. Please try rephrasing your question."
 
 def process_user_question(question: str, tokenizer, model) -> Tuple[str, dict]:
     """Process user question and return response with metadata"""
     start = time.time()
     
+    # First check if it's a greeting
     if is_greeting(question):
         response = get_greeting_response()
         return response, {
@@ -425,6 +418,7 @@ def process_user_question(question: str, tokenizer, model) -> Tuple[str, dict]:
             'generation_time': time.time() - start
         }
     
+    # Then check climate relevance
     is_climate, confidence, reason = is_climate_related(question)
     is_non_climate, topic = detect_non_climate_topics(question)
     
@@ -447,12 +441,10 @@ def process_user_question(question: str, tokenizer, model) -> Tuple[str, dict]:
     }
 
 def main():
-    # Initialize Firestore client
-    db = initialize_firestore()
-    if db is None: # If Firestore failed to initialize, stop the app
-        st.stop()
-
     with st.sidebar:
+        st.markdown("<div style='text-align:center; margin-bottom:20px;'>"
+                    "<img src='https://cdn-icons-png.flaticon.com/512/6057/6057198.png' width='80'>"
+                    "</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
@@ -470,22 +462,21 @@ def main():
         """)
         
         st.markdown("---")
-        st.subheader("Data & Training")
+        st.subheader("📊 Data & Training")
         
         # Add logging info and export functionality
-        if st.button("Export Training Data", help="Export logged interactions for model improvement"):
-            with st.spinner("Fetching training data from Firestore..."):
-                count = export_training_data(db) # Pass db to export function
-                if count is not None: # Check for None explicitly for successful export (even if 0)
-                    st.success(f"Exported {count} training examples!")
+        if st.button("📥 Export Training Data", help="Export logged interactions for model improvement"):
+            with st.spinner("Exporting training data..."):
+                count = export_training_data()
+                if count:
+                    st.success(f"✅ Exported {count} training examples!")
                 else:
-                    st.info("No training data available or export failed.")
+                    st.info("No training data available yet.")
         
         st.markdown("""
         <small>
         <em>AyikaBot logs interactions to improve climate education responses. 
-        Only climate-related Q&A pairs are used for training.
-        <br><b>By clicking on the "Export Training Data" button, you agree to share only your climate-related chat with us for further improvement of the chatbot</b></em>
+        Only climate-related Q&A pairs are used for training.</em>
         </small>
         """, unsafe_allow_html=True)
     
@@ -503,11 +494,11 @@ def main():
         if key not in st.session_state:
             st.session_state[key] = default_value
 
-    # Load model using the Hugging Face Hub ID
-    tokenizer, model = load_ayikabot_model(HUGGING_FACE_MODEL_ID)
+    # Load model
+    tokenizer, model = load_ayikabot_model("/content/ayikabot_clean")
     if not tokenizer or not model:
-        st.error("Failed to load the climate education model. Please ensure the model ID is correct and accessible on Hugging Face Hub.")
-        st.stop() # Stop the app if model fails to load
+        st.error("Failed to load the climate education model. Please check the model path.")
+        return
 
     col1, col2, col3 = st.columns([1, 6, 1])
     with col2:
@@ -543,16 +534,18 @@ def main():
 
         # Handle input submission (Enter key or button click)
         if (ask_button and user_question.strip()) or (user_question and user_question.strip() and user_question != st.session_state.get("last_processed_input", "")):
+            # Store the question and start thinking
             question_to_process = user_question.strip()
             st.session_state.pending_question = question_to_process
             st.session_state.is_thinking = True
-            st.session_state.input_key_counter += 1   
+            st.session_state.input_key_counter += 1  # Clear input immediately
             st.rerun()
         
         # Process pending question if we're thinking
         if st.session_state.is_thinking and st.session_state.get("pending_question"):
             question_to_process = st.session_state.pending_question
             
+            # Process the question
             response, metadata = process_user_question(question_to_process, tokenizer, model)
             stats = st.session_state.session_stats
             stats['questions_asked'] += 1
@@ -563,12 +556,14 @@ def main():
             else:
                 stats['rejected_questions'] += 1
                 
+            # Add to chat history
             st.session_state.chat_history.append({'question': question_to_process, 'response': response, 'metadata': metadata})
             st.session_state.last_processed_input = question_to_process
             
-            # Log the interaction to Firestore
-            log_user_interaction(db, question_to_process, response, metadata)
+            # Log the interaction
+            log_user_interaction(question_to_process, response, metadata)
             
+            # Clear thinking state
             st.session_state.is_thinking = False
             st.session_state.pending_question = ""
             st.rerun()
@@ -578,7 +573,7 @@ def main():
             st.markdown('<div class="metrics-container">', unsafe_allow_html=True)
             cols = st.columns(4)
             stats = st.session_state.session_stats
-            avg_time = stats['total_time'] / max(stats['climate_questions'], 1) if stats['climate_questions'] > 0 else 0
+            avg_time = stats['total_time'] / max(stats['climate_questions'], 1)
             cols[0].metric("Questions", stats['questions_asked'])
             cols[1].metric("Climate Topics", stats['climate_questions'])
             cols[2].metric("Redirected", stats['rejected_questions'])
@@ -587,13 +582,14 @@ def main():
 
         # Handle clear chat button
         if clear_button:
-            # Log session summary to Firestore before clearing
-            log_session_summary(db)
+            # Log session summary before clearing
+            log_session_summary()
             
             for key, default_value in session_keys.items():
                 st.session_state[key] = default_value
-            st.session_state.input_key_counter += 1   
+            st.session_state.input_key_counter += 1  # Force new input widget
             
+            # Generate new session ID for next session
             st.session_state.session_id = f"session_{int(time.time())}"
             st.rerun()
 
