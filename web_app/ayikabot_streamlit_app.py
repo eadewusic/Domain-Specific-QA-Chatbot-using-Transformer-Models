@@ -334,7 +334,7 @@ def export_training_data(db):
             }
             db.collection('training_export_logs').add(export_log_entry)
             print(f"Logged training data export event with {len(training_data)} records to Firestore.")
-            
+
             return len(training_data)
         
         return None # Return None if no training data is found
@@ -453,8 +453,6 @@ def main():
         st.stop()
 
     with st.sidebar:
-        # Re-added the 🌍 emoji with increased font-size for better visibility
-        st.markdown("<div style='text-align:center; margin-bottom:20px; font-size: 5rem;'>🌍</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
