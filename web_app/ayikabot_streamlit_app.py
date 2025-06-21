@@ -452,8 +452,6 @@ def main():
         st.stop()
 
     with st.sidebar:
-        # Changed from external image URL to a local emoji
-        st.markdown("<div style='text-align:center; margin-bottom:2px; font-size: 4.5rem;'>🌍</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
