@@ -42,7 +42,8 @@ def initialize_firestore():
             firebase_admin.initialize_app(cred)
         
         db = firestore.client()
-        st.success("Firebase Firestore initialized successfully!")
+        # Removed the UI success message; logging to console instead.
+        print("Firebase Firestore initialized successfully (backend log).")
         return db
     except Exception as e:
         st.error(f"Error initializing Firebase Firestore: {e}. "
@@ -452,8 +453,8 @@ def main():
 
     with st.sidebar:
         st.markdown("<div style='text-align:center; margin-bottom:20px;'>"
-                             "<img src='[https://cdn-icons-png.flaticon.com/512/6057/6057198.png](https://cdn-icons-png.flaticon.com/512/6057/6057198.png)' width='80'>"
-                             "</div>", unsafe_allow_html=True)
+                    "<img src='https://cdn-icons-png.flaticon.com/512/6057/6057198.png' width='80'>"
+                    "</div>", unsafe_allow_html=True)
         st.subheader("🌿 About AyikaBot")
         st.write("I'm an AI chatbot specialized in climate education. Ask me anything about climate science, environmental impacts, or sustainability solutions!")
         st.markdown("---")
