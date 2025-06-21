@@ -484,6 +484,7 @@ def main():
         <small>
         <em>AyikaBot logs interactions to improve climate education responses. 
         Only climate-related Q&A pairs are used for training. 
+        <br><b>Logs are now stored persistently in Firestore.</b></em>
         </small>
         """, unsafe_allow_html=True)
     
