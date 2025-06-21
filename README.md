@@ -11,9 +11,11 @@ AyikaBot is an intelligent climate education chatbot that transforms complex cli
 ![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)
 ![Live App Demo](https://img.shields.io/badge/%F0%9F%8C%90_Live_Demo-Try_AyikaBot-green?style=for-the-badge)
 
-### Why 'Climate Education' as Domain?
+## Why 'Climate Education' as Domain?
 
-Climate education faces a critical challenge: **complex scientific concepts need to be accessible to diverse audiences**. Traditional educational resources often lack the interactive, personalized approach that modern learners expect. AyikaBot bridges this gap by providing:
+**Despite being a solvable crisis, climate change is still held back by widespread public ignorance and misinformation about its causes and solutions, delaying the urgent action the planet desperately needs.** Climate education is key, yet it faces a major barrier: **complex scientific concepts** that often confuse or alienate people, leading to misinterpretation, apathy, or disengagement. Traditional educational resources often lack the **interactive, personalized approach** that today’s learners crave.
+
+**AyikaBot bridges this gap by providing:**
 
 - 24/7 Availability: Like having a climate science teacher always available
 - Personalized Learning: Tailored responses based on question complexity  
