@@ -42,12 +42,12 @@ def initialize_firestore():
             firebase_admin.initialize_app(cred)
         
         db = firestore.client()
-        # Removed the UI success message; logging to console instead.
+        # Log success message to console instead
         print("Firebase Firestore initialized successfully (backend log).")
         return db
     except Exception as e:
         st.error(f"Error initializing Firebase Firestore: {e}. "
-                 "Please ensure your 'FIREBASE_CONFIG' secret is correctly set in Streamlit Cloud.")
+                 "Please ensure 'FIREBASE_CONFIG' secret is correctly set in Streamlit Cloud.")
         return None
 
 # Page configuration
@@ -218,7 +218,7 @@ def load_ayikabot_model(model_id): # Changed from model_path to model_id
         model = TFT5ForConditionalGeneration.from_pretrained(model_id)
         return tokenizer, model
     except Exception as e:
-        st.error(f"Error loading model from Hugging Face Hub ({model_id}): {str(e)}. Please check your model ID and internet connection.")
+        st.error(f"Error loading model from Hugging Face Hub ({model_id}): {str(e)}. Please check model ID and internet connection.")
         return None, None
 
 def is_greeting(question: str) -> bool:
@@ -325,7 +325,7 @@ def export_training_data(db):
         if training_data:
             training_json = json.dumps(training_data, ensure_ascii=False, indent=2)
             
-            # --- NEW: Log export metadata to Firestore ---
+            # Log export metadata to Firestore
             export_log_entry = {
                 'timestamp': datetime.now(),
                 'exported_record_count': len(training_data),
@@ -334,15 +334,7 @@ def export_training_data(db):
             }
             db.collection('training_export_logs').add(export_log_entry)
             print(f"Logged training data export event with {len(training_data)} records to Firestore.")
-            # --- END NEW ---
-
-            st.download_button(
-                label="Download Training Data (JSON)",
-                data=training_json,
-                file_name=f"ayikabot_training_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                mime="application/json",
-                help="Downloads all climate-related Q&A from Firestore for retraining."
-            )
+            
             return len(training_data)
         
         return None # Return None if no training data is found
@@ -487,15 +479,14 @@ def main():
             with st.spinner("Fetching training data from Firestore..."):
                 count = export_training_data(db) # Pass db to export function
                 if count is not None: # Check for None explicitly for successful export (even if 0)
-                    st.success(f"Exported {count} training examples! Click the 'Download Training Data (JSON)' button above. An export log has been recorded in Firestore.")
+                    st.success(f"Exported {count} training examples!")
                 else:
-                    st.info("No training data available in Firestore or export failed.")
+                    st.info("No training data available or export failed.")
         
         st.markdown("""
         <small>
         <em>AyikaBot logs interactions to improve climate education responses. 
         Only climate-related Q&A pairs are used for training. 
-        <br><b>Logs are now stored persistently in Firestore, including export events.</b></em>
         </small>
         """, unsafe_allow_html=True)
     
