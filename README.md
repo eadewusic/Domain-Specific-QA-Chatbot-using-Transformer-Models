@@ -400,12 +400,27 @@ def evaluate_domain_detection():
 ```
 
 ## Conversation Examples
+### Example 1: Greeting Handling
+![image](./images/Greeting-Handling.png)
 
+### Example 2: Climate Questions
+- Basic Concept
+![image](./images/Basic-Concept.png)
 
+- Educational Scenario
+![image](./images/Educational-Scenario.png)
 
+- Solutions Focus
+![image](./images/Solutions-Focus.png)
 
+### Example 3: Domain Detection & Redirection - Non-Climate Question
+![image](./images/Domain-Detection.png)
 
+### Example 4: Compliment Recognition
+![image](./images/Compliment-Recognition.png)
 
+### **Conversation Flow Analytics**
+![image](./images/AyikaBot-v1-Demo-Image.png)
 
 ## Deployment
 ![Streamlit Live Demo](https://img.shields.io/badge/%F0%9F%8C%90_Streamlit_Live_Demo-Try_AyikaBot-green?style=for-the-badge)
@@ -421,5 +436,5 @@ def evaluate_domain_detection():
 
 If you have any questions, feedback, or collaboration requests, please feel free to reach out to me at [e.adewusi@alustudent.com](mailto:e.adewusi@alustudent.com)
 
-## **Mission**
+## **🌿 Mission**
 *Built as part of Project Ayika under the [Climiradi Roberts Foundation](https://lnk.bio/cr_foundation) - making climate education accessible through innovative AI technology.*
