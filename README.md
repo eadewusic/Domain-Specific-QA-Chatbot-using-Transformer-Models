@@ -24,7 +24,7 @@ AyikaBot is an intelligent climate education chatbot that transforms complex cli
 ## Core Chatbot Features
 
 ### **Web App**
-- **Streamlit for Global Accessibility**: A web application framework enabling 24/7 educational deployment via Streamlit Cloud
+- **Streamlit Cloud for Global Accessibility**: Leveraged this web application framework to facilitate global accessibility with 24/7 availability
 - **Real-time Responses**: ~17 second generation with thinking indicators
 - **Session Analytics**: Live tracking of questions, engagement, and learning patterns
 - **Conversation Intelligence**: Natural handling of greetings, compliments, and topic transitions
@@ -234,11 +234,6 @@ Domain Detection Performance:
 └── Conversation Intelligence: Handles greetings, compliments, farewells
 ```
 
-
-## Deployment
-
-- Live App Demo: view it on [Streamlit]( https://ayika-app-v1.streamlit.app/)
-
 ## Technologies Used
 ```
 ML/AI Stack:
@@ -413,7 +408,11 @@ def evaluate_domain_detection():
 
 
 
+## Deployment
 
+- Live App Demo: view it on [Streamlit]( https://ayika-app-v1.streamlit.app/)
+- **Project**: [AyikaBot Live Demo](https://ayika-app-v1.streamlit.app/)
+- **Model**: [Hugging Face Repository](https://huggingface.co/Climi/Climate-Education-QA-Chatbot)
 
 ## Video Presentation
 
@@ -421,7 +420,7 @@ def evaluate_domain_detection():
 
 ## Contact
 
-If you have any questions, feedback, or collaboration requests, please feel free to reach out to me at [e.adewusi@alustudent.com](mailto:e.adewusi@alustudent.com). Explore my other links [Here](https://www.linktr.ee/climiradi)
+If you have any questions, feedback, or collaboration requests, please feel free to reach out to me at [e.adewusi@alustudent.com](mailto:e.adewusi@alustudent.com)
 
 ## **Mission**
 *Built as part of Project Ayika under the [Climiradi Roberts Foundation](https://lnk.bio/cr_foundation) - making climate education accessible through innovative AI technology.*
