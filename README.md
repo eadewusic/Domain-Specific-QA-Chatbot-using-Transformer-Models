@@ -404,13 +404,13 @@ def evaluate_domain_detection():
 ![image](./images/Greeting-Handling.png)
 
 ### Example 2: Climate Questions
-- **Basic Concept**<br>
+- **Basic Concept**
 ![image](./images/Basic-Concept.png)
 
-- **Educational Scenario**<br>
+- **Educational Scenario**
 ![image](./images/Educational-Scenario.png)
 
-- **Solutions Focus**<br>
+- **Solutions Focus**
 ![image](./images/Solutions-Focus.png)
 
 ### Example 3: Domain Detection & Redirection - Non-Climate Question
@@ -428,7 +428,7 @@ def evaluate_domain_detection():
 ## Deployment
 ![Streamlit Live Demo](https://img.shields.io/badge/%F0%9F%8C%90_Streamlit_Live_Demo-Try_AyikaBot-green?style=for-the-badge)
 ![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)<br>
-- **Project**: [AyikaBot Live Demo](https://ayika-app-v1.streamlit.app/)
+- **Web App**: [AyikaBot Live Demo](https://ayika-app-v1.streamlit.app/)
 - **Model**: [Hugging Face Repository](https://huggingface.co/Climi/Climate-Education-QA-Chatbot)
 
 ## Video Presentation
