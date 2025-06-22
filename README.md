@@ -271,7 +271,6 @@ streamlit run ayikabot_streamlit_app.py
 ```
 
 ### **3. Use the Model Directly**
-![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)<br>
 I couldn't push my best fine-tuned pretrained T5 model to GitHub because of storage issue so I uploaded to Hugging Face Hub and it now has 34 downloads in 4 days of my initial commit. This approach also makes the model and tokenizer easily accessible.
 ```python
 from transformers import T5Tokenizer, TFT5ForConditionalGeneration
@@ -409,7 +408,8 @@ def evaluate_domain_detection():
 
 
 ## Deployment
-
+![Streamlit Live Demo](https://img.shields.io/badge/%F0%9F%8C%90_Streamlit_Live_Demo-Try_AyikaBot-green?style=for-the-badge)
+![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)<br>
 - **Project**: [AyikaBot Live Demo](https://ayika-app-v1.streamlit.app/)
 - **Model**: [Hugging Face Repository](https://huggingface.co/Climi/Climate-Education-QA-Chatbot)
 
