@@ -8,7 +8,6 @@ AyikaBot is an intelligent climate education chatbot that transforms complex cli
 ![Framework](https://img.shields.io/badge/Framework-TensorFlow-orange)
 ![Performance](https://img.shields.io/badge/BLEU-0.0549-brightgreen)
 ![Accuracy](https://img.shields.io/badge/Domain%20Detection-100%25-success)
-![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)
 
 ## Why 'Climate Education' as Domain?
 
@@ -21,6 +20,21 @@ AyikaBot is an intelligent climate education chatbot that transforms complex cli
 - Domain Expertise: Specialized knowledge prevents climate misinformation
 - Educational Guidance: Redirects users toward productive learning objectives
 - Age-Appropriate Content: Beginner to advanced difficulty levels
+
+## Core Chatbot Features
+
+### **Web App**
+- **Streamlit for Global Accessibility**: A web application framework enabling 24/7 educational deployment via Streamlit Cloud
+- **Real-time Responses**: ~17 second generation with thinking indicators
+- **Session Analytics**: Live tracking of questions, engagement, and learning patterns
+- **Conversation Intelligence**: Natural handling of greetings, compliments, and topic transitions
+- **Mobile Responsive**: Optimized for all devices and screen sizes
+
+### **Analytics & Continuous Learning**
+- **Firebase Integration**: Persistent logging of user interactions and learning patterns
+- **Training Data Export**: One-click download of climate Q&A pairs for model improvement
+- **Session Insights**: User engagement metrics and educational effectiveness tracking
+- **Privacy-Conscious**: Anonymous session tracking with opt-in data sharing
 
 ## Key Achievements
 
@@ -35,12 +49,6 @@ AyikaBot is an intelligent climate education chatbot that transforms complex cli
 - **Conversation Handling**: Smart greeting, compliment, and redirection capabilities
 - **Educational Focus**: Age-appropriate responses with factual accuracy safeguards
 - **Science Bridging**: Intelligent connections between general science and climate topics
-
-### **Real-World Impact**
-- **Live Deployment**: https://ayika-app-v1.streamlit.app/ with 24/7 availability
-- **Community Adoption**: 34 downloads on Hugging Face Hub in 4 days
-- **User Analytics**: Firebase integration tracking engagement and learning patterns
-- **Educational Reach**: Global accessibility for climate education
 
 ## Model Architecture
 
@@ -231,15 +239,6 @@ Domain Detection Performance:
 
 - Live App Demo: view it on [Streamlit]( https://ayika-app-v1.streamlit.app/)
 
-**App Features**:
-- ~17 second generation with thinking indicators
-- Live tracking of questions, engagement, and learning patterns
-- Natural handling of greetings, compliments, and topic transitions
-- **Firebase Integration**: Persistent logging of user interactions and learning patterns
-- **Training Data Export**: One-click download of climate Q&A pairs for model improvement
-- **Session Insights**: User engagement metrics and educational effectiveness tracking
-- **Privacy-Conscious**: Anonymous session tracking with opt-in data sharing
-
 ## Technologies Used
 ```
 ML/AI Stack:
@@ -277,6 +276,7 @@ streamlit run ayikabot_streamlit_app.py
 ```
 
 ### **3. Use the Model Directly**
+![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97_Hugging_Face-Climate_QA_Model-yellow?style=for-the-badge)
 I couldn't push my best fine-tuned pretrained T5 model to GitHub because of storage issue so I uploaded to Hugging Face Hub and it now has 34 downloads in 4 days of my initial commit. This approach also makes the model and tokenizer easily accessible.
 ```python
 from transformers import T5Tokenizer, TFT5ForConditionalGeneration
@@ -421,9 +421,7 @@ def evaluate_domain_detection():
 
 ## Contact
 
-If you have any questions, feedback, or collaboration requests, please feel free to reach out to me at [e.adewusi@alustudent.com](mailto:e.adewusi@alustudent.com)
+If you have any questions, feedback, or collaboration requests, please feel free to reach out to me at [e.adewusi@alustudent.com](mailto:e.adewusi@alustudent.com). Explore my other links [Here](https://www.linktr.ee/climiradi)
 
-Click [Here](https://www.linktr.ee/climiradi) for my other links
-
-### **🌱 Mission**
+## **Mission**
 *Built as part of Project Ayika under the [Climiradi Roberts Foundation](https://lnk.bio/cr_foundation) - making climate education accessible through innovative AI technology.*
