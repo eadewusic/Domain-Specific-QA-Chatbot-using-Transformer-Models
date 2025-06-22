@@ -271,7 +271,7 @@ streamlit run ayikabot_streamlit_app.py
 ```
 
 ### **3. Use the Model Directly**
-I couldn't push my best fine-tuned pretrained T5 model to GitHub because of storage issue so I uploaded to Hugging Face Hub and it now has 34 downloads in 4 days of my initial commit. This approach also makes the model and tokenizer easily accessible.
+I couldn't push my best fine-tuned pretrained T5 model to GitHub because of storage issue so I uploaded to Hugging Face Hub and it now has **41 downloads in 5 days** of my initial commit. This approach also makes the model and tokenizer easily accessible.
 ```python
 from transformers import T5Tokenizer, TFT5ForConditionalGeneration
 
