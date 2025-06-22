@@ -420,7 +420,10 @@ def evaluate_domain_detection():
 ![image](./images/Compliment-Recognition.png)
 
 ### **Conversation Flow Analytics**
-![image](./images/AyikaBot-v1-Demo-Image.png)
+![image](./images/Conversation-Flow.png)
+
+### **Firebase Firestore Dashboard**
+![image](./images/console-firebase-google-project-ayikabot-v1-firestore-databases.png)
 
 ## Deployment
 ![Streamlit Live Demo](https://img.shields.io/badge/%F0%9F%8C%90_Streamlit_Live_Demo-Try_AyikaBot-green?style=for-the-badge)
