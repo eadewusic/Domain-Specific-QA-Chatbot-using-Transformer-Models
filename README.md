@@ -404,13 +404,13 @@ def evaluate_domain_detection():
 ![image](./images/Greeting-Handling.png)
 
 ### Example 2: Climate Questions
-- Basic Concept
+- **Basic Concept**<br>
 ![image](./images/Basic-Concept.png)
 
-- Educational Scenario
+- **Educational Scenario**<br>
 ![image](./images/Educational-Scenario.png)
 
-- Solutions Focus
+- **Solutions Focus**<br>
 ![image](./images/Solutions-Focus.png)
 
 ### Example 3: Domain Detection & Redirection - Non-Climate Question
